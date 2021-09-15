@@ -10,6 +10,9 @@ var _importing := false
 var _thread: Thread
 
 onready var _palette_options := $HBox/Colors/VBox/Palettes
+onready var _outline := $HBox/Colors/VBox/HBox2/Outline
+onready var _outline_color := $HBox/Colors/VBox/HBox3/OutlineColor
+onready var _resize := $HBox/Colors/VBox/HBox/Resize
 onready var _spin_box := $HBox/Colors/VBox/HBoxContainer2/SpinBox
 onready var _grid := $HBox/Colors/VBox/Scroll/Marg/Grid
 onready var _select := $HBox/Colors/VBox/Select
@@ -69,7 +72,7 @@ func _on_file_dialog_file_selected(path: String) -> void:
 	if _file_dialog.mode == FileDialog.MODE_OPEN_FILE:
 		var i := Image.new()
 		if not i.load(path) == OK:
-			_error.text = "Error loading image."
+			_error.dialog_text = "Error loading image."
 			_error.popup_centered()
 			return
 		if _importing:
@@ -99,7 +102,7 @@ func _on_file_dialog_file_selected(path: String) -> void:
 	else:
 		var i: Image = _after.texture.get_data()
 		if not i.save_png(path) == OK:
-			_error.text = "Error saving image."
+			_error.dialog_text = "Error saving image."
 			_error.popup_centered()
 
 
@@ -113,9 +116,12 @@ func _recolor_image(_dummy) -> void:
 	$Working.popup_centered()
 	_gen.disabled = true
 	var image: Image = _before.texture.get_data()
+	var og_x := image.get_width()
+	var og_y = image.get_height()
 	var resize_x:int = image.get_width()/_spin_box.value if image.get_width()/_spin_box.value > 1 else 1
 	var resize_y:int = image.get_height()/_spin_box.value if image.get_height()/_spin_box.value > 1 else 1
 	image.resize(resize_x, resize_y, 0)
+	
 	if not (_palette_options.selected == 0 or _grid.get_child_count() == 0):
 		var palette := []
 		for c in _grid.get_children():
@@ -124,18 +130,38 @@ func _recolor_image(_dummy) -> void:
 		for x in image.get_width():
 			for y in image.get_height():
 				var image_color := image.get_pixel(x, y)
-				var closest_dist := 4.0
-				var closest_color: Color
-				for color in palette:
-					var dist := abs(color.r-image_color.r) +\
-						abs(color.g-image_color.g) +\
-						abs(color.b-image_color.b)
-					if dist <= closest_dist:
-						closest_dist = dist
-						closest_color = color
-				closest_color.a = image_color.a
-				image.set_pixel(x, y, closest_color)
+				if not image_color.a == 0.0:
+					var closest_dist := 4.0
+					var closest_color: Color
+					for color in palette:
+						var dist := abs(color.r-image_color.r) +\
+							abs(color.g-image_color.g) +\
+							abs(color.b-image_color.b)
+						if dist <= closest_dist:
+							closest_dist = dist
+							closest_color = color
+					closest_color.a = image_color.a
+					image.set_pixel(x, y, closest_color)
 		image.unlock()
+
+	if _outline.pressed:
+		image.lock()
+		var outline_pixels := []
+		for x in image.get_width():
+			for y in image.get_height():
+				if image.get_pixel(x, y).a == 0 and (
+					(x != 0 and image.get_pixel(x-1, y).a != 0) or
+					(x != image.get_width()-1 and image.get_pixel(x+1, y).a != 0) or
+					(y != 0 and image.get_pixel(x, y-1).a != 0) or
+					(y != image.get_height()-1 and image.get_pixel(x, y+1).a != 0)
+				):
+					outline_pixels.append(Vector2(x, y))
+		for pixel in outline_pixels:
+			image.set_pixelv(pixel, _outline_color.color)
+		image.unlock()
+	if not _resize.pressed:
+		image.resize(og_x, og_y, 0)
+	
 	var image_texture := ImageTexture.new()
 	image_texture.create_from_image(image, 0)
 	_after.texture = image_texture
@@ -196,3 +222,9 @@ func _on_meta_clicked(meta) -> void:
 
 func _on_credits_pressed() -> void:
 	$Credits.popup_centered()
+
+
+func _on_outline_color_pressed() -> void:
+	_selected_color = _outline_color
+	_color_picker.color = _selected_color.color
+	$ColorPop.popup_centered()
