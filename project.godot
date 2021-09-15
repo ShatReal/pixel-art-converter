@@ -11,12 +11,19 @@ config_version=4
 [application]
 
 config/name="Pixel Art Converter"
+config/description="A simple tool to turn your images into pixel art!"
 run/main_scene="res://scenes/main.tscn"
-config/icon="res://icon.png"
+config/icon="res://icons/icon.png"
+config/macos_native_icon="res://icons/icon.icns"
+config/windows_native_icon="res://icons/icon.ico"
 
 [autoload]
 
 Palettes="*res://scenes/palettes.gd"
+
+[debug]
+
+gdscript/warnings/return_value_discarded=false
 
 [importer_defaults]
 
