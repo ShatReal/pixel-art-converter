@@ -1,0 +1,280 @@
+[gd_scene load_steps=7 format=2]
+
+[ext_resource path="res://scenes/main.gd" type="Script" id=1]
+[ext_resource path="res://images/x.png" type="Texture" id=2]
+[ext_resource path="res://images/plus.png" type="Texture" id=3]
+[ext_resource path="res://scenes/color_picker.tscn" type="PackedScene" id=4]
+[ext_resource path="res://themes/theme.tres" type="Theme" id=5]
+
+[sub_resource type="DynamicFont" id=1]
+
+[node name="Main" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+theme = ExtResource( 5 )
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="ColorRect" type="ColorRect" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+color = Color( 0.352941, 0.411765, 0.533333, 1 )
+__meta__ = {
+"_edit_lock_": true,
+"_edit_use_anchors_": false
+}
+
+[node name="HBox" type="HBoxContainer" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="Colors" type="PanelContainer" parent="HBox"]
+margin_right = 237.0
+margin_bottom = 600.0
+
+[node name="VBox" type="VBoxContainer" parent="HBox/Colors"]
+margin_left = 4.0
+margin_top = 4.0
+margin_right = 233.0
+margin_bottom = 596.0
+size_flags_horizontal = 3
+custom_constants/separation = 4
+
+[node name="Palettes" type="OptionButton" parent="HBox/Colors/VBox"]
+margin_right = 229.0
+margin_bottom = 27.0
+
+[node name="Import" type="Button" parent="HBox/Colors/VBox"]
+margin_top = 31.0
+margin_right = 229.0
+margin_bottom = 58.0
+text = "Import Palette from Image"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="HBox/Colors/VBox"]
+margin_top = 62.0
+margin_right = 229.0
+margin_bottom = 89.0
+alignment = 1
+
+[node name="Add" type="Button" parent="HBox/Colors/VBox/HBoxContainer"]
+margin_left = 88.0
+margin_right = 112.0
+margin_bottom = 27.0
+hint_tooltip = "Add a color to the palette."
+custom_fonts/font = SubResource( 1 )
+icon = ExtResource( 3 )
+
+[node name="Delete" type="Button" parent="HBox/Colors/VBox/HBoxContainer"]
+margin_left = 116.0
+margin_right = 140.0
+margin_bottom = 27.0
+hint_tooltip = "Remove a color from the palette."
+icon = ExtResource( 2 )
+
+[node name="Scroll" type="ScrollContainer" parent="HBox/Colors/VBox"]
+margin_top = 93.0
+margin_right = 229.0
+margin_bottom = 437.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+follow_focus = true
+scroll_horizontal_enabled = false
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Marg" type="MarginContainer" parent="HBox/Colors/VBox/Scroll"]
+margin_right = 229.0
+margin_bottom = 344.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+custom_constants/margin_right = 2
+custom_constants/margin_top = 2
+custom_constants/margin_left = 2
+custom_constants/margin_bottom = 2
+
+[node name="Grid" type="GridContainer" parent="HBox/Colors/VBox/Scroll/Marg"]
+margin_left = 2.0
+margin_top = 2.0
+margin_right = 227.0
+margin_bottom = 342.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+custom_constants/vseparation = 2
+custom_constants/hseparation = 2
+columns = 10
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="HBox/Colors/VBox"]
+margin_top = 441.0
+margin_right = 229.0
+margin_bottom = 468.0
+rect_pivot_offset = Vector2( 1278, -347 )
+hint_tooltip = "The ratio of the resolution of the original image to the result image."
+
+[node name="Label" type="Label" parent="HBox/Colors/VBox/HBoxContainer2"]
+margin_top = 4.0
+margin_right = 105.0
+margin_bottom = 23.0
+size_flags_horizontal = 3
+text = "Pixel Size"
+
+[node name="SpinBox" type="SpinBox" parent="HBox/Colors/VBox/HBoxContainer2"]
+margin_left = 109.0
+margin_right = 229.0
+margin_bottom = 27.0
+size_flags_horizontal = 3
+min_value = 1.0
+max_value = 1000.0
+value = 100.0
+
+[node name="Select" type="Button" parent="HBox/Colors/VBox"]
+margin_top = 472.0
+margin_right = 229.0
+margin_bottom = 499.0
+text = "Select Image"
+
+[node name="Gen" type="Button" parent="HBox/Colors/VBox"]
+margin_top = 503.0
+margin_right = 229.0
+margin_bottom = 530.0
+disabled = true
+text = "Generate Image"
+
+[node name="Save" type="Button" parent="HBox/Colors/VBox"]
+margin_top = 534.0
+margin_right = 229.0
+margin_bottom = 561.0
+disabled = true
+text = "Save Image"
+
+[node name="Credits" type="Button" parent="HBox/Colors/VBox"]
+margin_top = 565.0
+margin_right = 229.0
+margin_bottom = 592.0
+text = "Credits"
+
+[node name="Images" type="PanelContainer" parent="HBox"]
+margin_left = 241.0
+margin_right = 1024.0
+margin_bottom = 600.0
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 4.0
+
+[node name="VBox" type="VBoxContainer" parent="HBox/Images"]
+margin_left = 4.0
+margin_top = 4.0
+margin_right = 779.0
+margin_bottom = 596.0
+size_flags_horizontal = 3
+
+[node name="Before" type="TextureRect" parent="HBox/Images/VBox"]
+margin_right = 775.0
+margin_bottom = 290.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+expand = true
+stretch_mode = 6
+
+[node name="HSeparator" type="HSeparator" parent="HBox/Images/VBox"]
+margin_top = 294.0
+margin_right = 775.0
+margin_bottom = 298.0
+
+[node name="After" type="TextureRect" parent="HBox/Images/VBox"]
+margin_top = 302.0
+margin_right = 775.0
+margin_bottom = 592.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+expand = true
+stretch_mode = 6
+
+[node name="FileDialog" type="FileDialog" parent="."]
+margin_right = 315.0
+margin_bottom = 130.0
+rect_min_size = Vector2( 512, 300 )
+access = 2
+filters = PoolStringArray( "*.bmp", "*.dds", "*.exr", "*.hdr", "*.jpg", "*.jpeg", "*.png", "*.tga", "*.svg", "*.svgz", "*.webp" )
+current_dir = "/game_development/projects/pixel-art-converter"
+current_path = "/game_development/projects/pixel-art-converter/"
+
+[node name="Error" type="AcceptDialog" parent="."]
+margin_right = 83.0
+margin_bottom = 58.0
+rect_min_size = Vector2( 200, 100 )
+dialog_autowrap = true
+
+[node name="Credits" type="PopupPanel" parent="."]
+margin_right = 8.0
+margin_bottom = 8.0
+rect_min_size = Vector2( 200, 100 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="RichTextLabel" type="RichTextLabel" parent="Credits"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 4.0
+margin_top = 4.0
+margin_right = -4.0
+margin_bottom = -4.0
+bbcode_enabled = true
+bbcode_text = "[center]Credits
+Programming - Exuin
+Palettes from [url=https://lospec.com/palette-list]Lospec[/url]
+m5x7 font by [url=https://managore.itch.io/m5x7]David Linssen[/url][/center]"
+text = "Credits
+Programming - Exuin
+Palettes from Lospec
+m5x7 font by David Linssen"
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="Working" type="PopupPanel" parent="."]
+margin_right = 8.0
+margin_bottom = 8.0
+rect_min_size = Vector2( 200, 100 )
+popup_exclusive = true
+
+[node name="Label" type="Label" parent="Working"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 4.0
+margin_top = 4.0
+margin_right = -4.0
+margin_bottom = -4.0
+text = "Working..."
+align = 1
+valign = 1
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="ColorPop" type="PopupPanel" parent="."]
+margin_right = 371.0
+margin_bottom = 496.0
+
+[node name="ColorPicker" parent="ColorPop" instance=ExtResource( 4 )]
+margin_left = 4.0
+margin_top = 4.0
+margin_right = 367.0
+margin_bottom = 492.0
+
+[connection signal="item_selected" from="HBox/Colors/VBox/Palettes" to="." method="_on_palettes_item_selected" flags=3]
+[connection signal="pressed" from="HBox/Colors/VBox/Import" to="." method="_on_import_pressed"]
+[connection signal="pressed" from="HBox/Colors/VBox/HBoxContainer/Add" to="." method="_on_add_pressed"]
+[connection signal="pressed" from="HBox/Colors/VBox/HBoxContainer/Delete" to="." method="_on_delete_pressed"]
+[connection signal="pressed" from="HBox/Colors/VBox/Select" to="." method="_on_select_pressed"]
+[connection signal="pressed" from="HBox/Colors/VBox/Gen" to="." method="_on_gen_pressed"]
+[connection signal="pressed" from="HBox/Colors/VBox/Save" to="." method="_on_save_pressed"]
+[connection signal="pressed" from="HBox/Colors/VBox/Credits" to="." method="_on_credits_pressed"]
+[connection signal="file_selected" from="FileDialog" to="." method="_on_file_dialog_file_selected"]
+[connection signal="meta_clicked" from="Credits/RichTextLabel" to="." method="_on_meta_clicked"]
+[connection signal="color_changed" from="ColorPop/ColorPicker" to="." method="_on_color_picker_color_changed"]
